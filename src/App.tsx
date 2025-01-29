@@ -120,6 +120,17 @@ function App() {
         setIsDarkMode(!isDarkMode);
     };
 
+    const highlightText = (text: string, query: string) => {
+        if (!query) return text;
+
+        const parts = text.split(new RegExp(`(${query})`, 'gi'));
+        return parts.map((part, index) =>
+            part.toLowerCase() === query.toLowerCase() ?
+                <span key={index} className="bg-blue-400 text-white">{part}</span> :
+                part
+        );
+    };
+
     const getStatusColor = (status: Status) => {
         switch (status) {
             case 'In use': return 'bg-green-100 text-green-800';
@@ -310,9 +321,9 @@ function App() {
                                                                     />
                                                                     <div>
                                                                         <p className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                                                                            {client.name}
+                                                                            {highlightText(client.name, searchQuery)}
                                                                         </p>
-                                                                        <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>{client.location}</p>
+                                                                        <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>{highlightText(client.location, searchQuery)}</p>
                                                                     </div>
                                                                 </div>
                                                             </motion.div>
@@ -348,11 +359,11 @@ function App() {
                                                                         <Truck className={`w-5 h-5 ${isDarkMode && "text-gray-300"}`} />
                                                                         <div>
                                                                             <p className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                                                                                {vehicle.name}
+                                                                                {highlightText(vehicle.name, searchQuery)}
                                                                             </p>
                                                                             {vehicle.driver && (
                                                                                 <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                                                                                    Driven by {vehicle.driver} {vehicle.time}
+                                                                                    Driven by {highlightText(vehicle.driver, searchQuery)}
                                                                                 </p>
                                                                             )}
                                                                         </div>
